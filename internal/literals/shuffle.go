@@ -21,8 +21,8 @@ func (shuffle) obfuscate(obfRand *mathrand.Rand, data []byte) *ast.BlockStmt {
 	obfRand.Read(key)
 
 	const (
-		minIdxKeySize = 2
-		maxIdxKeySize = 16
+		minIdxKeySize = 1
+		maxIdxKeySize = 4096
 	)
 
 	idxKeySize := minIdxKeySize

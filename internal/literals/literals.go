@@ -18,12 +18,12 @@ import (
 // MinSize is the lower bound limit, of the size of string-like literals
 // which we will obfuscate. This is needed in order for binary size to stay relatively
 // moderate, this also decreases the likelihood for performance slowdowns.
-const MinSize = 8
+const MinSize = 1
 
 // maxSize is the upper limit of the size of string-like literals
 // which we will obfuscate with any of the available obfuscators.
 // Beyond that we apply only a subset of obfuscators which are guaranteed to run efficiently.
-const maxSize = 2 << 10 // KiB
+const maxSize = 2 << 14 // KiB
 
 // Obfuscate replaces literals with obfuscated anonymous functions.
 func Obfuscate(rand *mathrand.Rand, file *ast.File, info *types.Info, linkStrings map[*types.Var]string) *ast.File {

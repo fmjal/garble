@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	maxChunkSize = 4
-	minCaseCount = 3
+	maxChunkSize = 4096
+	minCaseCount = 1
 )
 
 // Split obfuscator splits data into chunks of random length and shuffles them,

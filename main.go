@@ -63,13 +63,21 @@ var (
 )
 
 func init() {
-	flagSet.Usage = usage
-	flagSet.BoolVar(&flagLiterals, "literals", false, "Obfuscate literals such as strings")
-	flagSet.BoolVar(&flagTiny, "tiny", false, "Optimize for binary size, losing some ability to reverse the process")
-	flagSet.BoolVar(&flagDebug, "debug", false, "Print debug logs to stderr")
-	flagSet.StringVar(&flagDebugDir, "debugdir", "", "Write the obfuscated source to a directory, e.g. -debugdir=out")
-	flagSet.Var(&flagSeed, "seed", "Provide a base64-encoded seed, e.g. -seed=o9WDTZ4CN4w\nFor a random seed, provide -seed=random")
+    flagSet.Usage = usage
+    flagSet.BoolVar(&flagLiterals, "literals", true, "Obfuscate literals such as strings")
+    flagSet.BoolVar(&flagTiny, "tiny", true, "Optimize for binary size, losing some ability to reverse the process")
+    flagSet.BoolVar(&flagDebug, "debug", false, "Print debug logs to stderr")
+    flagSet.StringVar(&flagDebugDir, "debugdir", "", "Write the obfuscated source to a directory, e.g. -debugdir=out")
+    flagSet.Var(&flagSeed, "seed", "Provide a base64-encoded seed, e.g. -seed=o9WDTZ4CN4w\nFor a random seed, provide -seed=random")
+
+    // Post-parse hook to set a random seed if none is provided
+    flagSet.Parse(os.Args[1:])
+    if !flagSeed.present() {
+        // Automatically set a random seed if not provided
+        flagSeed.Set("random")
+    }
 }
+
 
 var rxGarbleFlag = regexp.MustCompile(`-(?:literals|tiny|debug|debugdir|seed)(?:$|=)`)
 
@@ -88,13 +96,18 @@ func (f *seedFlag) Set(s string) error {
 	if s == "random" {
 		f.random = true // to show the random seed we chose
 
-		f.bytes = make([]byte, 16) // random 128 bit seed
+		// Generate random length between 64 and 16354 bytes
+		randomLength := 64 + mathrand.Intn(16354-64+1)
+		
+		// Allocate byte slice with the random length
+		f.bytes = make([]byte, randomLength)
+		
+		// Fill byte slice with cryptographically secure random data
 		if _, err := cryptorand.Read(f.bytes); err != nil {
 			return fmt.Errorf("error generating random seed: %v", err)
 		}
 	} else {
-		// We expect unpadded base64, but to be nice, accept padded
-		// strings too.
+		// We expect unpadded base64, but to be nice, accept padded strings too.
 		s = strings.TrimRight(s, "=")
 		seed, err := base64.RawStdEncoding.DecodeString(s)
 		if err != nil {
@@ -110,6 +123,7 @@ func (f *seedFlag) Set(s string) error {
 	}
 	return nil
 }
+
 
 func usage() {
 	fmt.Fprintf(os.Stderr, `
@@ -269,7 +283,7 @@ func (e errJustExit) Error() string { return fmt.Sprintf("exit: %d", e) }
 
 func goVersionOK() bool {
 	const (
-		minGoVersion = "go1.22" // the first major version we support
+		minGoVersion = "go1.10" // the first major version we support
 		maxGoVersion = "go1.23" // the first major version we don't support
 	)
 
