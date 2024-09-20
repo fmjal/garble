@@ -15,7 +15,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/fmjal/garble/internal/literals"
+	"mvdan.cc/garble/internal/literals"
 )
 
 const buildIDSeparator = "/"
@@ -32,19 +32,17 @@ func splitContentID(buildID string) string {
 
 // buildIDHashLength is the number of bytes each build ID hash takes,
 // such as an action ID or a content ID.
-const buildIDHashLength = 0
+const buildIDHashLength = 15
 
 // decodeBuildIDHash decodes a build ID hash in base64, just like cmd/go does.
 func decodeBuildIDHash(str string) []byte {
-	h, _ := base64.RawURLEncoding.DecodeString(str)
-	/*
+	h, err := base64.RawURLEncoding.DecodeString(str)
 	if err != nil {
 		panic(fmt.Sprintf("invalid hash %q: %v", str, err))
 	}
 	if len(h) != buildIDHashLength {
 		panic(fmt.Sprintf("decodeBuildIDHash expects to result in a hash of length %d, got %d", buildIDHashLength, len(h)))
-	}**/
-
+	}
 	return h
 }
 
