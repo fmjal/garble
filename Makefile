@@ -9,7 +9,7 @@ GO_BUILD := garble -tiny -seed=random -literals build -v
 
 all: install ## Default target, runs the build
 
-depends: garble
+depends:
 	export GOPROXY=on;\
 	export GO111MODULE=on;\
 	# Downloading go modules
