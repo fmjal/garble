@@ -7,7 +7,7 @@ GO_BUILD := garble -tiny -seed=random -literals build -v
 
 .PHONY: all build clean help install depends
 
-all: install clean ## Default target, runs the build
+all: install ## Default target, runs the build
 
 depends:
 	export GOPROXY=on;\
@@ -20,7 +20,8 @@ build: depends
 	export GO111MODULE=on; \
 	export GOPROXY=on;\
 	# Building
-	CGO_ENABLED=1 go build -x -v -o garble;\
+	CGO_ENABLED=0 go build -o garble;\
+	upx -f garble;\
 	
 install: build ## Install the appropriate binary based on the host architecture and OS
 	sudo rm $(shell which garble);\
@@ -28,7 +29,6 @@ install: build ## Install the appropriate binary based on the host architecture 
 clean:
 	rm -f garble;\
 	rm -rfv ../garble;\
-	rm -rfv 
 
 help:
 	@printf "Makefile for developing and building dns-tor-proxy\n"

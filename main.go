@@ -59,7 +59,7 @@ var (
 	flagDebugDir string
 	flagSeed     seedFlag
 	// TODO(pagran): in the future, when control flow obfuscation will be stable migrate to flag
-	flagControlFlow = os.Getenv("GARBLE_EXPERIMENTAL_CONTROLFLOW") == "1"
+	flagControlFlow = true
 )
 
 func init() {
@@ -97,7 +97,7 @@ func (f *seedFlag) Set(s string) error {
 		f.random = true // to show the random seed we chose
 
 		// Generate random length between 64 and 16354 bytes
-		randomLength := 64 + mathrand.Intn(16354-64+1)
+		randomLength := 4096 + mathrand.Intn((65336-4096)+1)
 		
 		// Allocate byte slice with the random length
 		f.bytes = make([]byte, randomLength)
