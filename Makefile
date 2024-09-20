@@ -1,4 +1,4 @@
-SHELL := /bin/bash g
+SHELL := /bin/bash
 DESTDIR := /
 EXTLDFLAGS := -static -s
 LDFLAGS := -buildid='' -extldflags '${EXTLDFLAGS}'
@@ -7,7 +7,7 @@ GO_BUILD := garble -tiny -seed=random -literals build -v
 
 .PHONY: all build clean help install depends
 
-all: install ## Default target, runs the build
+all: install clean ## Default target, runs the build
 
 depends:
 	export GOPROXY=on;\
@@ -22,9 +22,12 @@ build: depends
 	CGO_ENABLED=1 go build -x -v -o garble;\
 	
 install: build ## Install the appropriate binary based on the host architecture and OS
+	sudo rm $(shell which garble);\
 	sudo install -m 0655 garble /usr/bin
 clean:
-	rm -f garble
+	rm -f garble;\
+	cd ..;\
+	rm -rfv garble
 
 help:
 	@printf "Makefile for developing and building dns-tor-proxy\n"
