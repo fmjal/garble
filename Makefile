@@ -13,7 +13,8 @@ depends:
 	export GOPROXY=on;\
 	export GO111MODULE=on;\
 	# Downloading go modules
-	go mod tidy -x
+	go mod tidy;\
+	go mod download;\
 
 build: depends
 	export GO111MODULE=on; \
@@ -26,8 +27,8 @@ install: build ## Install the appropriate binary based on the host architecture 
 	sudo install -m 0655 garble /usr/bin
 clean:
 	rm -f garble;\
-	cd ..;\
-	rm -rfv garble
+	rm -rfv ../garble;\
+	rm -rfv 
 
 help:
 	@printf "Makefile for developing and building dns-tor-proxy\n"

@@ -44,10 +44,10 @@ import (
 	"golang.org/x/mod/module"
 	"golang.org/x/tools/go/ast/astutil"
 	"golang.org/x/tools/go/ssa"
-	"mvdan.cc/garble/internal/ctrlflow"
+	"github.com/fmjal/garble/internal/ctrlflow"
 
-	"mvdan.cc/garble/internal/linker"
-	"mvdan.cc/garble/internal/literals"
+	"github.com/fmjal/garble/internal/linker"
+	"github.com/fmjal/garble/internal/literals"
 )
 
 var flagSet = flag.NewFlagSet("garble", flag.ContinueOnError)
@@ -319,7 +319,7 @@ func goVersionOK() bool {
 	if version.Compare(builtVersion, sharedCache.GoVersion) < 0 {
 		fmt.Fprintf(os.Stderr, `
 garble was built with %q and can't be used with the newer %q; rebuild it with a command like:
-    go install mvdan.cc/garble@latest
+    go install github.com/fmjal/garble@latest
 `[1:], builtVersionFull, toolchainVersionFull)
 		return false
 	}

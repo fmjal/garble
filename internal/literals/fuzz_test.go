@@ -16,7 +16,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"mvdan.cc/garble/internal/literals"
+	"github.com/fmjal/garble/internal/literals"
 )
 
 // The fuzzing string is passed in as a string and []byte literal.

@@ -1,4 +1,4 @@
-module mvdan.cc/garble
+module github.com/fmjal/garble
 
 go 1.22
 
