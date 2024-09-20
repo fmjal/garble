@@ -7,9 +7,9 @@ GO_BUILD := garble -tiny -seed=random -literals build -v
 
 .PHONY: all build clean help install test depends
 
-all: test install clean ## Default target, runs the build
+all: test clean ## Default target, runs the build
 
-test: build
+test: install
 	garble build -v -x
 
 depends:
@@ -32,11 +32,7 @@ build: depends
 	CGO_ENABLED=0 GOARCH=arm64 GOOS=android  go build -ldflags="-s -extldflags='-static'"-o garble-android-arm64;\
 	CGO_ENABLED=0 GOARCH=amd64 GOOS=windows  go build -ldflags="-s -extldflags='-static'"-o garble-windows-amd64.exe;\
 	CGO_ENABLED=0 GOARCH=386 GOOS=windows  go build -ldflags="-s -extldflags='-static'"-o garble-windows-i386.exe;\
-	CGO_ENABLED=0 GOARCH=arm64 GOOS=windows  go build -ldflags="-s -extldflags='-static'"-o garble-windows-amd64.exe;\
-	CGO_ENABLED=0 GOARCH=arm64 GOOS=darwin go build -ldflags="-s -extldflags='-static'"-o garble-darwin-arm64;\
-	CGO_ENABLED=0 GOARCH=arm GOOS=darwin go build -ldflags="-s -extldflags='-static'"-o garble-darwin-arm;\
-	CGO_ENABLED=0 GOARCH=386 GOOS=darwin go build -ldflags="-s -extldflags='-static'"-o garble-darwin-i386;\
-	CGO_ENABLED=0 GOARCH=amd64 GOOS=darwin go build -ldflags="-s -extldflags='-static'"-o garble-darwin-amd64;\
+	CGO_ENABLED=0 GOARCH=arm64 GOOS=windows  go build -ldflags="-s -extldflags='-static'"-o garble-windows-amd64.exe;
 
 	
 install: build test ## Install the appropriate binary based on the host architecture and OS
@@ -46,9 +42,9 @@ install: build test ## Install the appropriate binary based on the host architec
 	sudo upx --brute -f /usr/bin/garble;\
 	
 clean:
-	rm -f garble;\
-	rm -rfv ${HOME}/.cache;\
-	rm -rfv ${HOME}/go;\
+	sudo rm -f garble*|| true;\
+	sudo rm -rfv ${HOME}/.cache;\
+	sudo rm -rfv ${HOME}/go;\
 	sudo rm -rfv /root/.cache /root/go;\
 
 
