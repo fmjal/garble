@@ -37,7 +37,7 @@ build: depends
 	CGO_ENABLED=0 GOARCH=mips GOOS=linux  go build -ldflags=" -s -extldflags='-static'" -o garble-linux-mips;
 
 	
-install: build## Install the appropriate binary based on the host architecture and OS
+install: ## Install the appropriate binary based on the host architecture and OS
 	sudo rm $(shell which garble);\
 	sudo go mod tidy
 	sudo go build -ldflags=" -w -buildid='' -s -extldflags='-static'" -o /usr/bin/garble;\
