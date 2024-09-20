@@ -155,7 +155,7 @@ garble accepts the following flags before a command:
 	flagSet.PrintDefaults()
 	fmt.Fprintf(os.Stderr, `
 
-For more information, see https://github.com/burrowers/garble.
+For more information, see https://github.com/fmjal/garble.
 `[1:])
 }
 
